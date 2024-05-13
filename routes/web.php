@@ -9,4 +9,6 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/profile/{user}', [App\Http\Controllers\ProfilesController::class, 'index'])->name('profile.show');
+Route::resource('post', App\Http\Controllers\PostController::class);
+
+Route::get('profile/{user}', [App\Http\Controllers\ProfilesController::class, 'show'])->name('profile.show');

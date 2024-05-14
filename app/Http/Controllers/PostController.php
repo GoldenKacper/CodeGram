@@ -4,10 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Intervention\Image\Facades\Image;
 
 class PostController extends Controller
 {
-    // TODO Skończyłem na 2:06:50, bedziemy robić middleware
+    // TODO Skończyłem na 2:25:50, bedziemy robić show()
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
 
     /**
      * Display a listing of the resource.
@@ -30,12 +35,29 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
+//        $newGallery = new Gallery();
+//        $newGallery->g_tytul = $request->galleryTitle;
+//        $newGallery->g_podtytul = $request->gallerySubTitle;
+//        $newGallery->g_kategoria = $request->galleryCategory;
+//        $newGallery->g_katalog = $request->galleryCatalog;
+//        $newGallery->g_data = $request->galleryDate;
+//        $newGallery->save();
+
         $data = request()->validate([
             'caption' => 'required',
             'image' => 'required', 'image',
         ]);
 
-        auth()->user()->posts()->create($data);
+        $imagePath = request('image')->store('uploads', 'public');
+
+        $image = Image::make(public_path("storage/{$imagePath}"))->fit(1200, 1200);
+        $image->save();
+
+        auth()->user()->posts()->create([
+            'caption' => $data['caption'],
+            'image' => $imagePath,
+        ]);
+
         return redirect('/profile/' . auth()->user()->id);
     }
 

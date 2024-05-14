@@ -4,11 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\View\Factory;
+use Illuminate\View\View;
 use Intervention\Image\Facades\Image;
 
 class PostController extends Controller
 {
-    // TODO Skończyłem na 2:25:50, bedziemy robić show()
     public function __construct()
     {
         $this->middleware('auth');
@@ -63,10 +64,14 @@ class PostController extends Controller
 
     /**
      * Display the specified resource.
+     * Laravel automatically fetch $post with Posts in database
+     * if function's argument is Post $post instead of $post
+     * , so we don't need to
+     * $user = User::findOrFail($user_id); - ProfilesController
      */
-    public function show(Post $post)
+    public function show(Post $post) : Factory|View
     {
-        //
+        return view('posts.show', compact('post'));
     }
 
     /**

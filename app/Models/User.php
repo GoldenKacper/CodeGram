@@ -46,6 +46,21 @@ class User extends Authenticatable
         ];
     }
 
+    protected static function boot(): void {
+        parent::boot();
+
+        static::created(function ($user) {
+            $user->profile()->create([
+                'title' => $user->username,
+//                'image' => 'profile/CodeGramLogo_1.png'
+            ]);
+        });
+    }
+
+    public function following()
+    {
+        return $this->belongsToMany(Profile::class);
+    }
 
     public function profile()
     {

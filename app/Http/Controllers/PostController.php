@@ -44,6 +44,8 @@ class PostController extends Controller
 //        $newGallery->g_data = $request->galleryDate;
 //        $newGallery->save();
 
+        $this->authorize('create', Post::class);
+
         $data = request()->validate([
             'caption' => 'required',
             'image' => 'required', 'image',

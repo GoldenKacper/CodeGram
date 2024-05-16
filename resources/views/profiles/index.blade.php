@@ -3,20 +3,33 @@
 @section('content')
     <div class="container">
         <div class="row">
-            <div class="col-3 p-5">
-                <img src="{{asset('images/CodeGramLogo_1.png')}}" class="rounded-circle" alt="">
+            <div class="col-lg-4 col-md-5 col-sm-8 offset-md-0 offset-sm-2 p-5">
+                <img src="{{asset("{$user->profile->profileImage() }")}}" class="rounded-circle w-100" alt="">
             </div>
-            <div class="col-9 pt-5">
-                <div class="d-flex justify-content-between align-items-baseline">
-                    <h1>{{ $user->username }}</h1>
-                    <a href="{{ route('post.create') }}">Add New Post</a>
+            <div class="col-lg-8 col-md-7 col-sm-12 pt-5">
+                <div class="d-flex justify-content-between align-items-baseline pb-3">
+                    <div class="d-flex">
+                        <h1>{{ $user->username }}</h1>
+                        <follow-button user-id="{{ $user->id }}" follows="{{ $follows }}" ></follow-button>
+                    </div>
+
+                    @can('create', App\Models\Post::class)
+                        @can('update', $user->profile)
+                            <a href="{{ route('post.create') }}">Add New Post</a>
+                        @endcan
+                    @endcan
+
                     {{--                    //TODO: Make button instead of this href--}}
                     {{--                    //TODO: Make this element only on the profile currently logged user --}}
                 </div>
+                @can('update', $user->profile)
+                    <a href="{{route('profile.edit', ['user' => $user->id])}}">Edit Profile</a>
+                @endcan
                 <div class="d-flex">
                     <div class="pe-5"><strong>{{ $user->posts->count() }}</strong> posts</div>
                     <div class="pe-5"><strong>23k</strong> followers</div>
                     <div class="pe-5"><strong>212</strong> following</div>
+{{--                    TODO skończyłem na 3:46:51 --}}
                 </div>
                 <div class="pt-4 fw-bold">
                     <h5>{{ $user->profile->title }}</h5>
@@ -30,13 +43,17 @@
             </div>
         </div>
         <div class="row pt-5">
-            @foreach($user->posts as $post)
+            @foreach($posts as $post)
                 <div class="col-4 pb-4">
                     <a href="{{route('post.show', ['post' => $post->id])}}" class="btn btn-">
-                        <img src="/storage/{{ $post->image }}" class="w-100" alt="">
+                        <img src="{{asset("/storage/{$post->image}")}}" class="w-100" alt="">
                     </a>
                 </div>
             @endforeach
+            <div class="mt-3">
+                {{$posts->links('vendor.pagination.bootstrap-5')}}
+            </div>
         </div>
+
     </div>
 @endsection

@@ -16,4 +16,11 @@ class FollowsController extends Controller
     {
         return auth()->user()->following()->toggle($user->profile);
     }
+
+    public function getFollowingAndFollowers(User $user) {
+        return response()->json([
+            'followers' => $user->profile->followers->count(),
+            'following' => $user->following->count()
+        ]);
+    }
 }

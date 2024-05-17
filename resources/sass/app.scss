@@ -13,4 +13,6 @@
     background-color: $nav-bar-bg;
 }
 
-
+.btn-outline-danger, .btn-outline-success {
+    border-radius: $button-outline-radius;
+}

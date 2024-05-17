@@ -10,7 +10,7 @@
                 <div class="d-flex justify-content-between align-items-baseline pb-3">
                     <div class="d-flex">
                         <h1>{{ $user->username }}</h1>
-                        <follow-button user-id="{{ $user->id }}" follows="{{ $follows }}" ></follow-button>
+                        <follow-button user-id="{{ $user->id }}" follows="{{ $follows }}" username="{{ $user->username }}">
                     </div>
 
                     @can('create', App\Models\Post::class)
@@ -20,16 +20,16 @@
                     @endcan
 
                     {{--                    //TODO: Make button instead of this href--}}
-                    {{--                    //TODO: Make this element only on the profile currently logged user --}}
                 </div>
                 @can('update', $user->profile)
                     <a href="{{route('profile.edit', ['user' => $user->id])}}">Edit Profile</a>
                 @endcan
+                {{--                    TODO skończyłem na 3:46:51 --}}
+                {{--                <status-bar></status-bar>--}}
                 <div class="d-flex">
-                    <div class="pe-5"><strong>{{ $user->posts->count() }}</strong> posts</div>
-                    <div class="pe-5"><strong>23k</strong> followers</div>
-                    <div class="pe-5"><strong>212</strong> following</div>
-{{--                    TODO skończyłem na 3:46:51 --}}
+                    <div class="pe-5"><strong>{{ $postCount }}</strong> posts</div>
+                    <div class="pe-5"><strong class="followers-count">{{ $followersCount }}</strong> followers</div>
+                    <div class="pe-5"><strong class="following-count">{{ $followingCount }}</strong> following</div>
                 </div>
                 <div class="pt-4 fw-bold">
                     <h5>{{ $user->profile->title }}</h5>

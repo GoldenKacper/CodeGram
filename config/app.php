@@ -132,4 +132,8 @@ return [
 //        // ...
 //        'Image' => Intervention\Image\Facades\Image::class,
 //    ],
+    'special_users' => [
+        'Roksanka' => 'Roksanka',
+        'Kacper' => 'GoldenKacper',
+    ],
 ];
